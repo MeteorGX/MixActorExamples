@@ -1,0 +1,3 @@
+[submodule "MixActorCore"]
+	path = MixActorCore
+	url = https://github.com/MeteorGX/MixActorCore.git
