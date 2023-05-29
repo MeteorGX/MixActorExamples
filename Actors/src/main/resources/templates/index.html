@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Websocket测试</title>
+
+
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+
+
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+
+
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/zepto/1.2.0/zepto.min.js"></script>
+</head>
+<body>
+
+<!-- Nav Begin -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="javascript:void(0)">Actor转发控制</a>
+        </li>
+    </ul>
+</nav>
+
+
+<!-- Nav End -->
+<div class="container mt-4">
+
+    <div class="row">
+
+        <!-- Input Group Begin -->
+        <div class="col-sm-4">
+            <form autocomplete="off">
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">请求地址(ws://)</span>
+                    <input type="url" class="form-control" id="address" name="address" value="127.0.0.1">
+                </div>
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">请求端口</span>
+                    <input type="number" class="form-control" id="port" name="port" value="8081">
+                </div>
+
+                <div class="mb-3 input-group">
+                    <span class="input-group-text">请求路径</span>
+                    <input type="text" class="form-control" id="path" name="path" value="/actors">
+                </div>
+
+                <div class="mb-3">
+                    <textarea class="form-control" placeholder="发送内容" name="message" id="message" cols="30"
+                              rows="10" style="resize: none"></textarea>
+                </div>
+
+                <button type="button" class="btn btn-primary js-connect">连接</button>
+                <button type="button" class="btn btn-success js-send-text disabled">发送</button>
+                <button type="button" class="btn btn-danger js-close disabled">关闭</button>
+
+            </form>
+        </div>
+        <!-- Input Group End -->
+
+
+        <!-- Text Area Begin -->
+        <div class="col-sm-8">
+            <div class="mb-3">
+                <h2>请求结果</h2>
+                <div class="alert alert-info js-cards"></div>
+            </div>
+        </div>
+        <!-- Text Area End -->
+
+    </div>
+</div>
+
+<script>
+
+    // 全局共享的请求句柄
+    window.handlers = {
+        url: "",
+        socket: null,
+        text2buffer: function (text) {
+            let buf = new Uint8Array(text.length);
+            for (let i = 0; i < text.length; i++) {
+                buf[i] = text.charCodeAt(i);
+            }
+            return buf;
+        },
+        open: function (event) {
+            console.log(event);
+        },
+        close: function (event) {
+            $('.js-close').trigger("click");
+        },
+        error: function (event) {
+            $('.js-close').trigger("click");
+        },
+        message: function (event) {
+            const node = $('.js-cards');
+            node.prepend(
+                `<div class="card bg-success text-white">
+                    <div class="card-body">响应数据: ${event.data}</div>
+                </div>
+                <br>`
+            );
+        }
+    };
+
+
+    $(function () {
+
+        // 连接WebSocket
+        $('.js-connect').click(function () {
+            // 参数内容
+            const address = $('#address').val();
+            const port = $('#port').val();
+            const path = $('#path').val();
+
+            // 构建请求URL
+            let url;
+            if (address.startsWith("ws://")) {
+                url = `${address}:${port}${path}`;
+            } else {
+                url = `ws://${address}:${port}${path}`;
+            }
+
+            // 初始化对象
+            window.handlers.url = url;
+            window.handlers.socket = new WebSocket(url);
+
+            // 绑定事件
+            window.handlers.socket.onopen = window.handlers.open;
+            window.handlers.socket.onclose = window.handlers.close;
+            window.handlers.socket.onerror = window.handlers.error;
+            window.handlers.socket.onmessage = window.handlers.message;
+
+            // 设置可用请求
+            $('.js-send-text').removeClass("disabled");
+            $('.js-close').removeClass("disabled");
+        });
+
+
+        // 关闭请求
+        $('.js-close').click(function () {
+            if (window.handlers.socket instanceof WebSocket) {
+                window.handlers.socket.close();
+                window.handlers.socket = null;
+            }
+
+            $('.js-send-text').addClass("disabled");
+            $('.js-close').addClass("disabled");
+        });
+
+
+        // 发送文本数据
+        $('.js-send-text').click(function () {
+            // 参数内容
+            const message = $('#message').val();
+
+            // 确认是否可以转化JSON
+            try{
+                const ignore = JSON.parse(message);
+            }catch (e) {
+                window.alert("数据必须是JSON格式:{ value:int,data{ ... } }")
+                return ;
+            }
+
+
+            // 推送数据
+            if (window.handlers.socket instanceof WebSocket) {
+                window.handlers.socket.send(message);
+            }
+        });
+
+    });
+
+</script>
+
+</body>
+
+</html>
