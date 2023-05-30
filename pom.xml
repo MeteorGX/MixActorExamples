@@ -29,6 +29,11 @@
         <!-- Chatroom -->
         <module>Echo</module>
 
+        <!-- Actors -->
+        <module>Actors</module>
+
+        <!-- Mission -->
+        <module>Mission</module>
     </modules>
 
 </project>

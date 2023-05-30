@@ -1,0 +1,74 @@
+{
+    "0": {
+        "id": 0,
+        "key": "SIGN",
+        "name": "",
+        "description": "0为预留,1~9为签到性质任务"
+    },
+    "1": {
+        "id": 1,
+        "key": "DAY_SIGN",
+        "name": "每日签到",
+        "description": "每日签到"
+    },
+    "2": {
+        "id": 2,
+        "key": "MONTH_SIGN",
+        "name": "每月签到",
+        "description": "每月签到"
+    },
+    "3": {
+        "id": 3,
+        "key": "QUARTERLY_SIGN",
+        "name": "季度签到",
+        "description": "季度签到"
+    },
+    "4": {
+        "id": 4,
+        "key": "ACTIVITY_SIGN",
+        "name": "活动签到",
+        "description": "活动签到[活动ID+该标识]"
+    },
+    "10": {
+        "id": 10,
+        "key": "FIRST",
+        "name": "",
+        "description": "10为预留,11~59为永久的首次成就记录"
+    },
+    "11": {
+        "id": 11,
+        "key": "LOGIN_FIRST",
+        "name": "伟大的第一步",
+        "description": "首次登录成就"
+    },
+    "12": {
+        "id": 12,
+        "key": "PAY_FIRST",
+        "name": "首次购买",
+        "description": "首次商店购买道具"
+    },
+    "13": {
+        "id": 13,
+        "key": "RECHARGE_FIRST",
+        "name": "小财神",
+        "description": "首次进行游戏充值"
+    },
+    "14": {
+        "id": 14,
+        "key": "BATTLE_FIRST",
+        "name": "战神之姿",
+        "description": "首次进行战斗"
+    },
+    "15": {
+        "id": 15,
+        "key": "SELL_OUT_FIRST",
+        "name": "穷困潦倒",
+        "description": "首次闪电卖出道具"
+    },
+    "16": {
+        "id": 16,
+        "key": "DIE_FIRST",
+        "name": "大意失荆州",
+        "description": "首次被击败死亡"
+    }
+}
