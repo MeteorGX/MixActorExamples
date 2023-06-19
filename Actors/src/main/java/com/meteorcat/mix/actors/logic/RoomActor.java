@@ -5,7 +5,7 @@ import com.meteorcat.mix.actors.ActorWebSocketApplication;
 import com.meteorcat.mix.core.actor.ActorController;
 import com.meteorcat.mix.core.actor.ActorMapping;
 import com.meteorcat.mix.core.actor.ActorRuntime;
-import com.meteorcat.mix.core.utils.JsonNodeUtil;
+import com.meteorcat.mix.core.utils.JsonNodeExtends;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -94,7 +94,7 @@ public class RoomActor {
         }
 
         // 确定有消息字段
-        Optional<String> messageOptional = JsonNodeUtil.isText(data,"message");
+        Optional<String> messageOptional = JsonNodeExtends.isText(data,"message");
         if(messageOptional.isEmpty()){
             return ;
         }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meteorcat.mix.actors.config.WebsocketConfig;
 import com.meteorcat.mix.core.actor.ActorSearcher;
 import com.meteorcat.mix.core.actor.ActorTuple;
-import com.meteorcat.mix.core.utils.JsonNodeUtil;
+import com.meteorcat.mix.core.utils.JsonNodeExtends;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -187,8 +187,8 @@ public class ActorWebSocketApplication extends TextWebSocketHandler implements A
         }
 
         // 解析内部字段是否存在
-        Optional<Integer> valueOptional = JsonNodeUtil.isInteger(json, requestValueName);
-        Optional<JsonNode> dataOptional = JsonNodeUtil.isObject(json, requestDataName);
+        Optional<Integer> valueOptional = JsonNodeExtends.isInteger(json, requestValueName);
+        Optional<JsonNode> dataOptional = JsonNodeExtends.isObject(json, requestDataName);
         if (valueOptional.isEmpty() || dataOptional.isEmpty()) {
             session.close(CloseStatus.BAD_DATA);
             return;
@@ -243,7 +243,7 @@ public class ActorWebSocketApplication extends TextWebSocketHandler implements A
         }};
 
         // 转为JSON数据
-        Optional<String> responseOptional = JsonNodeUtil.toMapStr(mapper, response);
+        Optional<String> responseOptional = JsonNodeExtends.isMapStr(mapper, response);
         if (responseOptional.isEmpty()) {
             return;
         }
