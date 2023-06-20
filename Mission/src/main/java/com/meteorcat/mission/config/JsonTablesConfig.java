@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.springframework.core.io.buffer.DefaultDataBufferFactory.DEFAULT_INITIAL_CAPACITY;
+
 /**
  * Json策划表配置
  * @author MeteorCat
@@ -45,9 +47,9 @@ public class JsonTablesConfig {
      * @return Map<String, JsonNode>
      * @throws IOException IO异常
      */
-    @Bean
+    @Bean(name = "CONFIGS")
     public Map<String, JsonNode> getNodes() throws IOException {
-        Map<String,JsonNode> nodes = new HashMap<>();
+        Map<String,JsonNode> nodes = new HashMap<>(DEFAULT_INITIAL_CAPACITY);
         Path pathHandler = Path.of(path);
         try(Stream<Path> filenames = Files.list(pathHandler)){
             // 检索所有的JSON文件
